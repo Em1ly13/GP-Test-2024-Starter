@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://bunyohpobvu8b"]
+[gd_scene load_steps=8 format=3 uid="uid://bunyohpobvu8b"]
 
 [ext_resource type="Texture2D" uid="uid://rb8smo0f45mc" path="res://icon.svg" id="1_wucqp"]
 [ext_resource type="Texture2D" uid="uid://c20guhsckpqq8" path="res://white pic.png" id="2_g57sa"]
-[ext_resource type="Script" path="res://Area2DSprite.gd" id="3_dlql8"]
+[ext_resource type="Script" path="res://Sprite2D3.gd" id="3_ukgho"]
+[ext_resource type="Script" path="res://RigidBody2DA.gd" id="4_s7pag"]
 
 [sub_resource type="GDScript" id="GDScript_otx0c"]
 resource_name = "button"
@@ -19,10 +20,11 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _button_pressed():
 	print(\"Hello world!\")
+	add
 "
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_22sam"]
-size = Vector2(1962.14, 1098.3)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6eif1"]
+size = Vector2(1952.7, 1088.13)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cjpfu"]
 size = Vector2(121, 125)
@@ -39,21 +41,22 @@ expand_icon = true
 script = SubResource("GDScript_otx0c")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(512, 512)
 texture = ExtResource("1_wucqp")
 
-[node name="Sprite2D3" type="Sprite2D" parent="."]
+[node name="ground" type="Sprite2D" parent="."]
 position = Vector2(519, 1005)
 scale = Vector2(0.529524, 0.0983334)
 texture = ExtResource("2_g57sa")
 
-[node name="Area2D" type="Area2D" parent="Sprite2D3"]
-script = ExtResource("3_dlql8")
+[node name="RigidBody2D" type="RigidBody2D" parent="ground"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D3/Area2D"]
-position = Vector2(-12.2751, -294.915)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ground/RigidBody2D"]
+position = Vector2(-11.3311, -259.321)
 scale = Vector2(1, 1)
-shape = SubResource("RectangleShape2D_22sam")
+shape = SubResource("RectangleShape2D_6eif1")
+script = ExtResource("3_ukgho")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -85,16 +88,17 @@ offset_left = 363.0
 offset_top = 8.0
 offset_right = 416.0
 offset_bottom = 45.0
+text = "0"
 
-[node name="Icon Sprite" type="Node2D" parent="."]
-
-[node name="RigidBody2D" type="RigidBody2D" parent="Icon Sprite"]
+[node name="icon" type="RigidBody2D" parent="."]
 position = Vector2(350, 350)
+script = ExtResource("4_s7pag")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Icon Sprite/RigidBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="icon"]
 position = Vector2(-1.5, 1.5)
 shape = SubResource("RectangleShape2D_cjpfu")
 
-[node name="Sprite2D2" type="Sprite2D" parent="Icon Sprite"]
-position = Vector2(350, 350)
+[node name="Sprite2D2" type="Sprite2D" parent="icon"]
 texture = ExtResource("1_wucqp")
+
+[connection signal="value_changed" from="Control/Slider" to="Control/Slider/Label" method="_on_slider_value_changed"]
